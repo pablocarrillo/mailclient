@@ -14,12 +14,14 @@ Always import mail
 
 Create the message object:
 
-    msg = mail.Message('This will be the subject', 'This will be the body content', 'sender@sender.com', 'to@you.com')
+    msg = mail.Message('This will be the subject', 'This will be the body content', 
+    'sender@sender.com', 'to@you.com')
 
 
 You can send to recipients:
 
-	msg = mail.Message('This will be the subject', 'This will be the body content', 'sender@sender.com', 'to@you.com, and@you.com, foryou@too.com')
+	msg = mail.Message('This will be the subject', 'This will be the body content',
+	 'sender@sender.com', 'to@you.com, and@you.com, foryou@too.com')
 
 
 Create server object:
