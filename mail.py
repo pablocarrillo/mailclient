@@ -35,10 +35,6 @@ class Server(object):
                                              self.port)
 
     def send(self, message):
-        print "Sending to {0}".format(message.recipients_list)
-        print "From {0}".format(message.sender)
-        print "Msg {0}".format(message.message)
-        print "msg 2 {0}".format(message.message.as_string())
         self.smtp.sendmail(message.sender, message.recipients_list,
                            message.message.as_string())
 
