@@ -33,3 +33,7 @@ Create server object with login (gmail example):
 	s = mail.Server('smtp.gmail.com', '587', 'gmailuser@gmail.com', 'yourpassword', True)
 	
 The last parameter is True because gmail requires to start tls, otherwise it can be False
+
+Send email:
+
+	s.send(msg)
