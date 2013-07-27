@@ -37,3 +37,8 @@ The last parameter is True because gmail requires to start tls, otherwise it can
 Send email:
 
 	s.send(msg)
+
+
+## TODO
+* Add tests
+* Attachments
