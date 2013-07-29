@@ -6,6 +6,7 @@ Mail client module
 
 import smtplib
 from email.mime.text import MIMEText
+from mail_exceptions import ConnectionRefused, DataError
 
 
 class Server(object):
@@ -25,7 +26,12 @@ class Server(object):
         self.port = port
         self.host = '{0}:{1}'.format(server, port)
         self.use_tls = use_tls
-        self.smtp = smtplib.SMTP(self.host)
+        try:
+            self.smtp = smtplib.SMTP(self.host)
+        except Exception as ex:
+            raise ConnectionRefused("Connection failed, "
+                                    "please check data. {0}".format(ex))
+
         self.smtp.ehlo()
         if self.use_tls:
             self.smtp.starttls()
@@ -49,6 +55,8 @@ class Server(object):
         """
         Build the mime object, and send the message.
         """
+        if not isinstance(message, Message):
+            raise DataError("You have to send a mail.Message object.")
         message.check_message_properties()
         mime = message.build_mime()
         self.smtp.sendmail(message.sender, message.recipients_list,
