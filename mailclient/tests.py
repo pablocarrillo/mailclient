@@ -6,7 +6,7 @@ Tests for mail client
 
 import mail
 import unittest
-from mail_exceptions import ConnectionRefused, DataError
+from mail_exceptions import ConnectionRefused, DataError, InvalidPath
 
 
 class MailClientTestCase(unittest.TestCase):
@@ -37,6 +37,29 @@ class MailClientTestCase(unittest.TestCase):
                            'iamthe@sender.com', 'iamthe@recipient1.com, '
                                                 'iamthe@recipient2.com')
         s.send(msg)
+
+    def test_file_int(self):
+        msg = mail.Message()
+        with self.assertRaises(DataError):
+            msg.attach(1234)
+
+    def test_file_file(self):
+        fp = open('mail_exceptions.py')
+        msg = mail.Message()
+        msg.attach(fp)
+
+    def test_file_string(self):
+        msg = mail.Message()
+        msg.attach('mail_exceptions.py')
+
+    def test_file_path_bad(self):
+        msg = mail.Message()
+        with self.assertRaises(InvalidPath):
+            msg.attach('/this/does/not/exist/')
+
+    def test_file_path_ok(self):
+        msg = mail.Message()
+        msg.attach('mail_exceptions.py')
 
 
 def main():

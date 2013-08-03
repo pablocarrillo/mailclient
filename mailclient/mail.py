@@ -5,16 +5,22 @@ Mail client module
 """
 
 import smtplib
+import os
+import magic
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from mail_exceptions import ConnectionRefused, DataError
+from email.mime.application import MIMEApplication
+from email.mime.audio import MIMEAudio
+from email.mime.image import MIMEImage
+from mail_exceptions import ConnectionRefused, DataError, InvalidPath
 
 
 class Server(object):
-
     """
     Server class.
     Inits the connection, build the mime object and send
     """
+
     def __init__(self, server, port=25, username=None, password=None,
                  use_tls=False):
         """
@@ -74,15 +80,20 @@ class Message(object):
         self.sender = sender
         self.recipients_list = ""
         self.recipients = recipients
+        self._attachment = False
 
     def build_mime(self):
         """
         Build MIMEText()
         """
-        self.mime = MIMEText(self.text)
+        self.mime = MIMEMultipart()
+        self.mime.attach(MIMEText(self.text))
         self.mime['Subject'] = self.subject
         self.mime['From'] = self.sender
         self.mime['To'] = self.recipients
+
+        if self._attachment:
+            self.mime.attach(self._attachment)
 
         return self.mime
 
@@ -99,7 +110,32 @@ class Message(object):
         else:
             self.recipients_list = ""
 
-
+    def attach(self, attachment):
+        if isinstance(attachment, str):
+            if os.path.exists(attachment):
+                fp = open(attachment)
+            else:
+                raise InvalidPath("File path is not valid.")
+        elif isinstance(attachment, file):
+            fp = attachment
+        else:
+            raise DataError("Argument must be a string (file path) or a file"
+                            " object.")
+        magic_mime = magic.Magic(mime=True)
+        mime = None
+        if 'application' in magic_mime.from_file(fp.name):
+            mime = MIMEApplication(fp.read())
+        elif 'audio' in magic_mime.from_file(fp.name):
+            mime = MIMEAudio(fp.read())
+        elif 'image' in magic_mime.from_file(fp.name):
+            mime = MIMEImage(fp.read())
+        #elif 'text' in magic_mime.from_file(fp.name):
+        #    mime = MIMEText(fp.read())
+        if mime:
+            mime.add_header('Content-Disposition', 'attachment',
+                            filename=os.path.split(fp.name)[-1])
+        self._attachment = mime
+        fp.close()
 
     def __repr__(self):
         """

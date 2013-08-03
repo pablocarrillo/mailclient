@@ -39,6 +39,12 @@ Send email:
 	s.send(msg)
 
 
-## TODO
-* Add tests
-* Attachments
+
+### Changelog
+
+* 0.1.0
+	* Bug fixes
+	* Attachments
+* 0.0.1
+	* Basic functionality
+	* Fixes

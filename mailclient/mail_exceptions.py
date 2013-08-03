@@ -12,3 +12,9 @@ class DataError(Exception):
     Error in data.
     """
 
+
+class InvalidPath(Exception):
+    """
+    Attachment path is invalid.
+    """
+
