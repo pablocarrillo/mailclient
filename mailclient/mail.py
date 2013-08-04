@@ -63,9 +63,9 @@ class Server(object):
         """
         if not isinstance(message, Message):
             raise DataError("You have to send a mail.Message object.")
-        message.check_message_properties()
-        mime = message.build_mime()
-        self.smtp.sendmail(message.sender, message.recipients_list,
+        message._check_message_properties()
+        mime = message._build_mime()
+        self.smtp.sendmail(message.sender, message._recipients_list,
                            mime.as_string())
 
 
@@ -78,11 +78,11 @@ class Message(object):
         self.subject = subject
         self.text = text
         self.sender = sender
-        self.recipients_list = ""
+        self._recipients_list = ""
         self.recipients = recipients
         self._attachment = False
 
-    def build_mime(self):
+    def _build_mime(self):
         """
         Build MIMEText()
         """
@@ -97,7 +97,7 @@ class Message(object):
 
         return self.mime
 
-    def check_message_properties(self):
+    def _check_message_properties(self):
         if not self.subject:
             self.subject = ""
         if not self.text:
@@ -106,9 +106,9 @@ class Message(object):
             self.sender = ""
 
         if self.recipients:
-            self.recipients_list = self.recipients.replace(' ', '').split(',')
+            self._recipients_list = self.recipients.replace(' ', '').split(',')
         else:
-            self.recipients_list = ""
+            self._recipients_list = ""
 
     def attach(self, attachment):
         if isinstance(attachment, str):

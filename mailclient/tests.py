@@ -61,6 +61,12 @@ class MailClientTestCase(unittest.TestCase):
         msg = mail.Message()
         msg.attach('mail_exceptions.py')
 
+    def test_adding_name(self):
+        msg = mail.Message(sender="'Adrian Espinosa' me@me.com")
+        s = mail.Server('localhost')
+        s.send(msg)
+
+
 
 def main():
     unittest.main()

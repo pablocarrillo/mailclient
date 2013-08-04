@@ -5,8 +5,6 @@
 This wrapper pretends to ease email sending in python. Smtplib is not very comfortable to use.
 
 
-This is a work in progress, right now you can't even send attachments.
-
 #### Examples
 Always import mail
 
@@ -39,8 +37,43 @@ Send email:
 	s.send(msg)
 
 
+If you want to set a name to the sender, you can add the sender name like this:
+
+	msg = mail.Message('My Subject', 'Body', '"John Smith" john.smith@gmail.com')
+
+
+Creating a empty message:
+
+	msg = mail.Message()
+
+You can add all parameters later:
+
+	msg.sender = '"John Smith" john.smith@gmail.com'
+	msg.subject = 'This is the subject'
+	msg.text = 'The body content'
+	msg.recipients = 'recipient@one.com, recipient@two.com'
+
+Or even set some of them at the Message creation:
+
+	msg = mail.Message(text='Body content',recipients='john.smith@gmail.com')
+
+There two ways to add attachements, first one is by passing a file object:
+	
+	    fp = open('/path/to/file')
+        msg = mail.Message()
+        msg.attach(fp)
+        
+Or by passing the string path to the file:
+
+        msg = mail.Message()
+        msg.attach('/path/to/file')
+        
+Don't worry about the MIME type, it should be automatically detected and attached with the correct one. As simple as that.
+
 
 ### Changelog
+* 0.1.1
+	* Set some properties to private
 
 * 0.1.0
 	* Bug fixes
