@@ -4,11 +4,13 @@
 
 This wrapper pretends to ease email sending in python. Smtplib is not very comfortable to use.
 
+Mail client is now on pypi!
+
+#### Install mail client
+	pip install mailclient
+
 
 #### Examples
-Always import mail
-
-	import mail
 
 Create the message object:
 

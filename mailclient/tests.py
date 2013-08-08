@@ -67,7 +67,6 @@ class MailClientTestCase(unittest.TestCase):
         s.send(msg)
 
 
-
 def main():
     unittest.main()
 
