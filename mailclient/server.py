@@ -5,7 +5,7 @@ Mail client module
 """
 
 import smtplib
-
+from message import Message
 from mail_exceptions import ConnectionRefused, DataError
 
 
