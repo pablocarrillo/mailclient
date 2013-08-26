@@ -12,25 +12,33 @@ Mail client is now on pypi!
 
 #### Examples
 
+Importing mailclient:
+
+    import mailclient
+    
+Or:
+
+    from mailclient import Message, Server
+
 Create the message object:
 
-    msg = mail.Message('This will be the subject', 'This will be the body content', 
+    msg = mailclient.Message('This will be the subject', 'This will be the body content', 
     'sender@sender.com', 'to@you.com')
 
 
 You can send to recipients:
 
-	msg = mail.Message('This will be the subject', 'This will be the body content',
+	msg = mailclient.Message('This will be the subject', 'This will be the body content',
 	 'sender@sender.com', 'to@you.com, and@you.com, foryou@too.com')
 
 
 Create server object:
 
-	s = mail.Server('localhost', '25') # no authentication nor tls
+	s = mailclient.Server('localhost', '25') # no authentication nor tls
 
 Create server object with login (gmail example):
 
-	s = mail.Server('smtp.gmail.com', '587', 'gmailuser@gmail.com', 'yourpassword', True)
+	s = mailclient.Server('smtp.gmail.com', '587', 'gmailuser@gmail.com', 'yourpassword', True)
 	
 The last parameter is True because gmail requires to start tls, otherwise it can be False
 
@@ -41,12 +49,12 @@ Send email:
 
 If you want to set a name to the sender, you can add the sender name like this:
 
-	msg = mail.Message('My Subject', 'Body', '"John Smith" john.smith@gmail.com')
+	msg = mailclient.Message('My Subject', 'Body', '"John Smith" john.smith@gmail.com')
 
 
 Creating a empty message:
 
-	msg = mail.Message()
+	msg = mailclient.Message()
 
 You can add all parameters later:
 
@@ -57,23 +65,28 @@ You can add all parameters later:
 
 Or even set some of them at the Message creation:
 
-	msg = mail.Message(text='Body content',recipients='john.smith@gmail.com')
+	msg = mailclient.Message(text='Body content',recipients='john.smith@gmail.com')
 
 There two ways to add attachements, first one is by passing a file object:
 	
 	    fp = open('/path/to/file')
-        msg = mail.Message()
+        msg = mailclient.Message()
         msg.attach(fp)
         
 Or by passing the string path to the file:
 
-        msg = mail.Message()
+        msg = mailclient.Message()
         msg.attach('/path/to/file')
         
 Don't worry about the MIME type, it should be automatically detected and attached with the correct one. As simple as that.
 
 
 ### Changelog
+
+* 0.2.0
+	* Refactoring. Message class and Server class are now in different files
+	* Import simplified
+	* Tests adapted
 * 0.1.1
 	* Set some properties to private
 

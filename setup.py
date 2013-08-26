@@ -17,7 +17,7 @@ packages = [
     'mailclient',
 ]
 
-requires = []
+requires = ['python-magic']
 
 setup(
     name='mailclient',
