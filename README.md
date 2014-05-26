@@ -82,6 +82,8 @@ Don't worry about the MIME type, it should be automatically detected and attache
 
 
 ### Changelog
+* 0.2.1
+	* Fix bug #4. Failed to attach some files.
 
 * 0.2.0
 	* Refactoring. Message class and Server class are now in different files

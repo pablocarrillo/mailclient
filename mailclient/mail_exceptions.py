@@ -18,3 +18,8 @@ class InvalidPath(Exception):
     Attachment path is invalid.
     """
 
+class CannotAttachFile(Exception):
+    """
+    Cant attach the file.
+    """
+

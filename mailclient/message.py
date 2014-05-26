@@ -13,7 +13,8 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.audio import MIMEAudio
 from email.mime.image import MIMEImage
-from mail_exceptions import InvalidPath, DataError
+from mail_exceptions import InvalidPath, DataError, CannotAttachFile
+from mimetypes import MimeTypes
 
 
 class Message(object):
@@ -69,18 +70,9 @@ class Message(object):
             raise DataError("Argument must be a string (file path) or a file"
                             " object.")
         magic_mime = magic.Magic(mime=True)
-        mime = None
-        if 'application' in magic_mime.from_file(fp.name):
-            mime = MIMEApplication(fp.read())
-        elif 'audio' in magic_mime.from_file(fp.name):
-            mime = MIMEAudio(fp.read())
-        elif 'image' in magic_mime.from_file(fp.name):
-            mime = MIMEImage(fp.read())
-            #elif 'text' in magic_mime.from_file(fp.name):
-        #    mime = MIMEText(fp.read())
-        if mime:
-            mime.add_header('Content-Disposition', 'attachment',
-                            filename=os.path.split(fp.name)[-1])
+        mime = MIMEApplication(fp.read())
+        mime.add_header('Content-Disposition', 'attachment',
+                        filename=os.path.split(fp.name)[-1])
         self._attachment = mime
         fp.close()
 

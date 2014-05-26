@@ -7,7 +7,8 @@ Tests for mail client
 import server
 import message
 import unittest
-from mail_exceptions import ConnectionRefused, DataError, InvalidPath
+from mail_exceptions import (ConnectionRefused, DataError, InvalidPath,
+                             CannotAttachFile)
 
 
 class MailClientTestCase(unittest.TestCase):
@@ -35,8 +36,8 @@ class MailClientTestCase(unittest.TestCase):
     def test_send_ok(self):
         s = server.Server('localhost')
         msg = message.Message('This is my subject', 'And this is the body',
-                           'iamthe@sender.com', 'iamthe@recipient1.com, '
-                                                'iamthe@recipient2.com')
+                              'iamthe@sender.com', 'iamthe@recipient1.com, '
+                              'iamthe@recipient2.com')
         s.send(msg)
 
     def test_file_int(self):
@@ -45,9 +46,18 @@ class MailClientTestCase(unittest.TestCase):
             msg.attach(1234)
 
     def test_file_file(self):
+        s = server.Server('localhost')
         fp = open('mail_exceptions.py')
-        msg = message.Message()
+        msg = message.Message('Attaching .py', '', '', '')
         msg.attach(fp)
+        s.send(msg)
+
+    def test_file_csv(self):
+        s = server.Server('localhost')
+        fp = open('../test.csv')
+        msg = message.Message('Attaching .csv', '', '', '')
+        msg.attach(fp)
+        s.send(msg)
 
     def test_file_string(self):
         msg = message.Message()
